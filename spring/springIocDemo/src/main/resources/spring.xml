@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:c="http://www.springframework.org/schema/c"
+       xmlns:p="http://www.springframework.org/schema/p"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
         https://www.springframework.org/schema/beans/spring-beans.xsd">
 
     <!--通过默认构造方法实例化bean-->
     <bean id="bean" class="com.spring.demo.bean.Bean" name="bean_1,bean_2"/>
     <!--bean的别名，alias标签仅支持一个别名，bean标签的name可支持多个-->
-    <alias name="bean" alias="bean_3"/>
+    <!--<alias name="bean" alias="bean_3"/>-->
 
     <!--通过静态工厂方法实例化bean-->
     <bean id="bean2" class="com.spring.demo.bean.Bean2Factory"
@@ -17,4 +19,93 @@
     <bean id="bean3Factory" class="com.spring.demo.bean.Bean3Factory"/>
     <bean id="bean3" class="com.spring.demo.bean.Bean3Factory"
           factory-bean="bean3Factory" factory-method="getBean3"/>
+
+    <!--构造方法与set注入-->
+    <bean id="anotherBook" class="com.spring.demo.diDemo.AnotherBook"/>
+    <bean id="book" class="com.spring.demo.diDemo.Book">
+        <!--构造器参数
+            index：参数的顺序
+            name：当前参数的名称
+            type：参数的类型
+            ref：适用于有依赖对象的类型(beanId)
+            value：简单数据类型
+        -->
+        <constructor-arg index="0" name="anotherBook" type="com.spring.demo.diDemo.AnotherBook"
+                         ref="anotherBook"/>
+        <constructor-arg index="1" name="name" type="java.lang.String" value="java"/>
+
+        <property name="anotherBook1" ref="anotherBook"/>
+        <property name="name1" value="java script"/>
+
+        <property name="nameList">
+            <list>
+                <value>php</value>
+                <value>python</value>
+            </list>
+        </property>
+        <property name="anotherBookList">
+            <list>
+                <ref bean="anotherBook"/>
+                <ref bean="anotherBook"/>
+            </list>
+        </property>
+
+        <property name="nameSet">
+            <set>
+                <value>php</value>
+                <value>python</value>
+            </set>
+        </property>
+        <property name="anotherBookSet">
+            <set>
+                <ref bean="anotherBook"/>
+                <ref bean="anotherBook"/>
+            </set>
+        </property>
+
+        <property name="nameMap">
+            <map>
+                <entry key="test1" value="php"/>
+                <entry key="test2" value="python"/>
+            </map>
+        </property>
+        <property name="anotherBookMap">
+            <map>
+                <entry key-ref="anotherBook" value-ref="anotherBook"/>
+            </map>
+        </property>
+        
+        <property name="properties">
+            <props>
+                <prop key="test1">php</prop>
+                <prop key="test2">python</prop>
+            </props>
+        </property>
+
+        <!--null值注入-->
+        <property name="anotherBook2">
+            <null/>
+        </property>
+    </bean>
+
+    <!--简单写法
+        c: constructor 构造器注入
+        p: property set注入
+    -->
+    <!--<bean id="book" class="com.spring.demo.diDemo.Book"-->
+          <!--c:anotherBook-ref="anotherBook" c:name="java"-->
+          <!--p:anotherBook1-ref="anotherBook" p:name1="java script"/>-->
+
+    <bean id="scope2" class="com.spring.demo.scopeDemo.Scope2"
+          scope="prototype"/>
+    <bean id="scope1" class="com.spring.demo.scopeDemo.Scope1"
+          scope="prototype">
+        <!--<property name="scope2" ref="scope2"/>-->
+        <!--方法注入-->
+        <lookup-method name="createScope2" bean="scope2"/>
+    </bean>
+
+    <bean id="applicationController" class="com.spring.demo.webDemo.ApplicationController" scope="application"/>
+    <bean id="requestController" class="com.spring.demo.webDemo.RequestController" scope="request"/>
+    <bean id="sessionController" class="com.spring.demo.webDemo.SessionController" scope="session"/>
 </beans>
