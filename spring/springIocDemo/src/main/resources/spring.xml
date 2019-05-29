@@ -1,10 +1,10 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xmlns:c="http://www.springframework.org/schema/c"
-       xmlns:p="http://www.springframework.org/schema/p"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans
-        https://www.springframework.org/schema/beans/spring-beans.xsd">
+<?xml version= "1.0" encoding ="UTF-8" ?>
+        <beans xmlns="http://www.springframework.org/schema/beans"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:c="http://www.springframework.org/schema/c"
+        xmlns:p="http://www.springframework.org/schema/p"
+        xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
     <!--通过默认构造方法实例化bean-->
     <bean id="bean" class="com.spring.demo.bean.Bean" name="bean_1,bean_2"/>
@@ -108,4 +108,21 @@
     <bean id="applicationController" class="com.spring.demo.webDemo.ApplicationController" scope="application"/>
     <bean id="requestController" class="com.spring.demo.webDemo.RequestController" scope="request"/>
     <bean id="sessionController" class="com.spring.demo.webDemo.SessionController" scope="session"/>
+
+    <!--自定义作用域-->
+    <bean id="myScope" class="com.spring.demo.scopeDemo.MyScope"/>
+    <!--spring自带自定义作用域
+        每个线程里spring会给与一个新实例
+    -->
+    <bean id="simpleThreadScope" class="org.springframework.context.support.SimpleThreadScope"/>
+    <bean class="org.springframework.beans.factory.config.CustomScopeConfigurer">
+        <property name="scopes">
+            <map>
+                <entry key="myScope" value-ref="myScope"/>
+                <entry key="simpleThreadScope" value-ref="simpleThreadScope"/>
+            </map>
+        </property>
+    </bean>
+    <bean id="testMyScope" class="com.spring.demo.scopeDemo.TestMyScope"
+        scope="simpleThreadScope"/>
 </beans>
