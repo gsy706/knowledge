@@ -125,4 +125,29 @@
     </bean>
     <bean id="testMyScope" class="com.spring.demo.scopeDemo.TestMyScope"
         scope="simpleThreadScope"/>
+
+    <!--生命周期-->
+    <bean id="lifeCircle" class="com.spring.demo.lifeCircleDemo.LifeCircle"
+          init-method="onInit" destroy-method="onDestroy"/>
+
+    <!--bean属性继承
+        abstract=true 指不需要实例化
+    -->
+    <bean id="parentClass" class="com.spring.demo.beanExtendDemo.ParentClass"
+          abstract="true">
+        <property name="data1" value="data1"/>
+        <property name="data2" value="data2"/>
+        <property name="data3" value="data3"/>
+    </bean>
+
+    <bean id="class1" class="com.spring.demo.beanExtendDemo.Class1"
+          parent="parentClass">
+        <property name="data4" value="data4"/>
+        <property name="data5" value="data5"/>
+    </bean>
+    <bean id="class2" class="com.spring.demo.beanExtendDemo.Class2"
+          parent="parentClass">
+        <property name="data7" value="data7"/>
+        <property name="data8" value="data8"/>
+    </bean>
 </beans>
