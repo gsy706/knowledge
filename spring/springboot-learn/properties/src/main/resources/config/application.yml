@@ -1,0 +1,26 @@
+server:
+  port: 9527
+
+app:
+  proper:
+    # 可直接使用random函数生成随机数,随项目启动仅生成一次
+    key: ${random.uuid}
+    id: ${random.int}
+    value: test123
+  demo:
+    val: autoInject
+
+user:
+  name2: 111
+
+source: config-application.yml
+
+# 选中生效的配置文件为
+# application.yml, application-dev.yml, application-biz.yml
+# 优先级为：biz文件的配置覆盖dev文件,dev文件的覆盖application的配置
+spring:
+  profiles:
+    active: dev,biz
+
+biz:
+  total: appliaction
