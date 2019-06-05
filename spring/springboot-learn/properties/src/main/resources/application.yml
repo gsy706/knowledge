@@ -24,3 +24,8 @@ spring:
 
 biz:
   total: appliaction
+  refresh: ${random.long}
+  key: refresh-test
+
+rest:
+  uuid: ${random.uuid}
