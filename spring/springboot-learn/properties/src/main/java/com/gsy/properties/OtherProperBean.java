@@ -5,6 +5,7 @@ package com.gsy.properties;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 
@@ -18,6 +19,7 @@ import org.springframework.context.annotation.PropertySource;
 @Configuration
 @PropertySource("classpath:biz.properties")
 @ConfigurationProperties(prefix = "biz")
+@EnableConfigurationProperties(OtherProperBean.class)
 public class OtherProperBean {
 
     private String token;
