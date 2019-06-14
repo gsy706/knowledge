@@ -34,6 +34,11 @@ public class AnoAspect {
         System.out.println("Aspect after method start! args：" + JSON.toJSONString(joinPoint.getArgs()));
     }
 
+    /**
+     * 执行完毕之后，通过 args指定参数；通过 returning 指定返回的结果，要求返回值类型匹配
+     * @author: gusiyuan
+     * @date: 2019-06-13
+     */
     @AfterReturning(value = "point() && args(time)", returning = "result")
     public void doAfterReturning(long time, String result){
         System.out.println("Aspect after method return! args：" + time + "ans：" + result);
@@ -45,6 +50,16 @@ public class AnoAspect {
         Object proceed = joinPoint.proceed();
         System.out.println("Aspect around ——————> end! ans：" + proceed);
         return proceed;
+    }
+
+    @Before("point()")
+    public void sameBefore(){
+        System.out.println("sameAspect");
+    }
+
+    @Before("@annotation(AnoDot)")
+    public void anoBefore(){
+        System.out.println("AnoAspect");
     }
 
 }
