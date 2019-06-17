@@ -14,18 +14,21 @@ public class AopApplication {
         SpringApplication.run(AopApplication.class, args);
     }
 
-    public AopApplication(DemoBean demoBean){
-        String uuid = demoBean.randUUID(System.currentTimeMillis());
-        System.out.println("---------uuid：" + uuid + "----------");
+//    public AopApplication(DemoBean demoBean){
+//        String uuid = demoBean.randUUID(System.currentTimeMillis());
+//        System.out.println("---------uuid：" + uuid + "----------");
+//    }
+
+    public AopApplication(AnoDemoBean anoDemoBean){
+        this.anoDemoBean = anoDemoBean;
+        this.anoDemoBean();
     }
 
-//    public AopApplication(AnoDemoBean anoDemoBean){
-//        this.anoDemoBean = anoDemoBean;
-//        this.anoDemoBean();
-//    }
-//
 //    public void anoDemoBean(){
-//        System.out.println(">>>>>>>" + anoDemoBean.getUUID(System.currentTimeMillis()));
+//        System.out.println(">>>>>>>" + anoDemoBean.randUUID(System.currentTimeMillis()));
 //    }
+    public void anoDemoBean(){
+        anoDemoBean.scopeUUID(System.currentTimeMillis());
+    }
 
 }

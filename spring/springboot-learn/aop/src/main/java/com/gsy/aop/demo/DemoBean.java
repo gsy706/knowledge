@@ -3,6 +3,7 @@
  */
 package com.gsy.aop.demo;
 
+import com.gsy.aop.annotation.AnoDot;
 import org.springframework.stereotype.Component;
 
 import java.util.UUID;
@@ -21,6 +22,7 @@ public class DemoBean {
      * @author: gusiyuan
      * @date: 2019-06-13
      */
+    @AnoDot
     public String randUUID(long time){
         try {
             System.out.println("randUUID before process!");
