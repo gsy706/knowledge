@@ -1,7 +1,9 @@
 package com.gsy.aop;
 
+import com.gsy.aop.demo.AnoDemo;
 import com.gsy.aop.demo.DemoBean;
 import com.gsy.aop.demo2.AnoDemoBean;
+import com.gsy.aop.demo2.PrintDemo;
 import com.gsy.aop.order.InnerDemoBean;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -34,13 +36,18 @@ public class AopApplication {
 //        anoDemoBean.scopeUUID(System.currentTimeMillis());
 //    }
 
-    public AopApplication(InnerDemoBean innerDemoBean){
-        this.innerDemoBean = innerDemoBean;
-        this.innerDemoBean();
-    }
+//    public AopApplication(InnerDemoBean innerDemoBean){
+//        this.innerDemoBean = innerDemoBean;
+//        this.innerDemoBean();
+//    }
 
-    private void innerDemoBean() {
-        System.out.println("result: " + innerDemoBean.print());
+//    private void innerDemoBean() {
+//        System.out.println("result: " + innerDemoBean.print());
+//    }
+
+    public AopApplication(PrintDemo printDemo, AnoDemo anoDemo){
+        System.out.println(printDemo.getRand(10,"gusiyuan"));
+        System.out.println(anoDemo.getUUID("!666!"));
     }
 
 }

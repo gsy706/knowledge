@@ -18,6 +18,7 @@
         <module>log</module>
         <module>bean</module>
         <module>aop</module>
+        <module>mysql</module>
     </modules>
 
     <properties>
