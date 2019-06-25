@@ -1,5 +1,7 @@
 package com.gsy.mysql;
 
+import com.gsy.mysql.insert.InsertService;
+import com.gsy.mysql.query.QueryService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -16,9 +18,20 @@ public class MysqlApplication {
         SpringApplication.run(MysqlApplication.class, args);
     }
 
-    public MysqlApplication(JdbcTemplate jdbcTemplate){
-        List<Map<String, Object>> maps = jdbcTemplate.queryForList("select * from subscribe");
-        log.info("result: {}",maps);
+//    public MysqlApplication(JdbcTemplate jdbcTemplate){
+//        List<Map<String, Object>> maps = jdbcTemplate.queryForList("select * from subscribe");
+//        log.info("result: {}",maps);
+//    }
+
+//    public MysqlApplication(InsertService insertService){
+//        insertService.basicInsert();
+//        insertService.batchInsert();
+//    }
+
+    public MysqlApplication(QueryService queryService){
+        queryService.queryForMap();
+        queryService.queryForList();
+        queryService.queryForObject();
     }
 
 }
