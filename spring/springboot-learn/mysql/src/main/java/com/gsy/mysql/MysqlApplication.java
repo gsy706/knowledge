@@ -2,6 +2,7 @@ package com.gsy.mysql;
 
 import com.gsy.mysql.insert.InsertService;
 import com.gsy.mysql.query.QueryService;
+import com.gsy.mysql.query.QueryServiceV2;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -28,10 +29,9 @@ public class MysqlApplication {
 //        insertService.batchInsert();
 //    }
 
-    public MysqlApplication(QueryService queryService){
-        queryService.queryForMap();
-        queryService.queryForList();
-        queryService.queryForObject();
+    public MysqlApplication(QueryServiceV2 queryService){
+        queryService.queryForRowSet();
+        queryService.query();
     }
 
 }
