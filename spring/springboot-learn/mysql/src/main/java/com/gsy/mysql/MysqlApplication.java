@@ -1,8 +1,10 @@
 package com.gsy.mysql;
 
+import com.gsy.mysql.delete.DeleteService;
 import com.gsy.mysql.insert.InsertService;
 import com.gsy.mysql.query.QueryService;
 import com.gsy.mysql.query.QueryServiceV2;
+import com.gsy.mysql.update.UpdateService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -33,5 +35,13 @@ public class MysqlApplication {
         queryService.queryForRowSet();
         queryService.query();
     }
+
+//    public MysqlApplication(UpdateService updateService){
+//        updateService.update();
+//    }
+
+//    public MysqlApplication(DeleteService deleteService){
+//        deleteService.delete();
+//    }
 
 }

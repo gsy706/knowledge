@@ -19,6 +19,7 @@
         <module>bean</module>
         <module>aop</module>
         <module>mysql</module>
+        <module>redis</module>
     </modules>
 
     <properties>
