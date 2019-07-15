@@ -9,12 +9,12 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.redis.connection.RedisPassword;
 import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
 import org.springframework.data.redis.connection.lettuce.LettuceClientConfiguration;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.data.redis.connection.lettuce.LettucePoolingClientConfiguration;
 import org.springframework.data.redis.core.RedisTemplate;
-
 import java.time.Duration;
 
 /**
@@ -24,17 +24,23 @@ import java.time.Duration;
  * @date: 2019-07-04
  */
 @Configuration
-public class RedisAutoConfig {
+public class RedisAutoConfig{
+
+    @Bean(initMethod = "init")
+    public AA aa(){
+        return new AA();
+    }
 
     @Bean
     public LettuceConnectionFactory defaultLettuceConnectionFactory(RedisStandaloneConfiguration defaultRedisConfig,
                                                                     GenericObjectPoolConfig defaultPoolConfig) {
-        LettuceClientConfiguration clientConfiguration = LettucePoolingClientConfiguration.builder()
-                .commandTimeout(Duration.ofMillis(100)).poolConfig(defaultPoolConfig).build();
-        return new LettuceConnectionFactory(defaultRedisConfig, clientConfiguration);
+        LettuceClientConfiguration clientConfig =
+                LettucePoolingClientConfiguration.builder().commandTimeout(Duration.ofMillis(100))
+                        .poolConfig(defaultPoolConfig).build();
+        return new LettuceConnectionFactory(defaultRedisConfig, clientConfig);
     }
 
-    @Bean
+    @Bean(name = "redisTemplate")
     public RedisTemplate<String, String> defaultRedisTemplate(
             LettuceConnectionFactory defaultLettuceConnectionFactory) {
         RedisTemplate<String, String> redisTemplate = new RedisTemplate<>();
@@ -65,23 +71,84 @@ public class RedisAutoConfig {
     @Configuration
     @ConditionalOnProperty(name = "host", prefix = "spring.local-redis")
     public static class LocalRedisConfig {
-        @Value("${spring.local-redis.host:127.0.0.1}")
+        @Value("${spring.local-redis.host}")
         private String host;
-        @Value("${spring.local-redis.port:6379}")
+        @Value("${spring.local-redis.port}")
         private Integer port;
-        @Value("${spring.local-redis.password:}")
+        @Value("${spring.local-redis.password}")
         private String password;
-        @Value("${spring.local-redis.database:0}")
+        @Value("${spring.local-redis.database}")
         private Integer database;
 
-        @Value("${spring.local-redis.lettuce.pool.max-active:8}")
+        @Value("${spring.local-redis.lettuce.pool.max-active}")
         private Integer maxActive;
-        @Value("${spring.local-redis.lettuce.pool.max-idle:8}")
+        @Value("${spring.local-redis.lettuce.pool.max-idle}")
         private Integer maxIdle;
-        @Value("${spring.local-redis.lettuce.pool.max-wait:-1}")
+        @Value("${spring.local-redis.lettuce.pool.max-wait}")
         private Long maxWait;
-        @Value("${spring.local-redis.lettuce.pool.min-idle:0}")
+        @Value("${spring.local-redis.lettuce.pool.min-idle}")
         private Integer minIdle;
+
+        @Bean
+        public GenericObjectPoolConfig localPoolConfig(){
+            GenericObjectPoolConfig config = new GenericObjectPoolConfig();
+            config.setMaxTotal(maxActive);
+            config.setMaxIdle(maxIdle);
+            config.setMinIdle(minIdle);
+            config.setMaxWaitMillis(maxWait);
+            return config;
+        }
+
+        @Bean
+        public RedisStandaloneConfiguration localRedisConfig() {
+            RedisStandaloneConfiguration config = new RedisStandaloneConfiguration();
+            config.setHostName(host);
+            config.setPassword(RedisPassword.of(password));
+            config.setPort(port);
+            config.setDatabase(database);
+            return config;
+        }
+    }
+
+    @Configuration
+    public static class DefaultRedisConfig {
+        @Value("${spring.redis.host}")
+        private String host;
+        @Value("${spring.redis.port}")
+        private Integer port;
+        @Value("${spring.redis.password}")
+        private String password;
+        @Value("${spring.redis.database}")
+        private Integer database;
+
+        @Value("${spring.redis.lettuce.pool.max-active}")
+        private Integer maxActive;
+        @Value("${spring.redis.lettuce.pool.max-idle}")
+        private Integer maxIdle;
+        @Value("${spring.redis.lettuce.pool.max-wait}")
+        private Long maxWait;
+        @Value("${spring.redis.lettuce.pool.min-idle}")
+        private Integer minIdle;
+
+        @Bean
+        public GenericObjectPoolConfig defaultPoolConfig() {
+            GenericObjectPoolConfig config = new GenericObjectPoolConfig();
+            config.setMaxTotal(maxActive);
+            config.setMaxIdle(maxIdle);
+            config.setMinIdle(minIdle);
+            config.setMaxWaitMillis(maxWait);
+            return config;
+        }
+
+        @Bean
+        public RedisStandaloneConfiguration defaultRedisConfig() {
+            RedisStandaloneConfiguration config = new RedisStandaloneConfiguration();
+            config.setHostName(host);
+            config.setPassword(RedisPassword.of(password));
+            config.setPort(port);
+            config.setDatabase(database);
+            return config;
+        }
     }
 
 }

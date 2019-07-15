@@ -7,7 +7,7 @@ spring:
     lettuce:
       pool:
         max-active: 32
-        max-wait: 300ms
+        max-wait: 300
         max-idle: 16
         min-idle: 8
   local-redis:
@@ -21,3 +21,5 @@ spring:
         max-wait: 100
         max-idle: 8
         min-idle: 4
+server:
+  port: 9532
