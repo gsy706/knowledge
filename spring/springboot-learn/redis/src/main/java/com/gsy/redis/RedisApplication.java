@@ -20,10 +20,10 @@ public class RedisApplication {
         SpringApplication.run(RedisApplication.class, args);
     }
 
-    public RedisApplication(RedisTemplate<String, String> redisTemplate){
-        String key = redisTemplate.opsForValue().get("key");
-        System.out.println("value:" + key);
-    }
+//    public RedisApplication(RedisTemplate<String, String> redisTemplate){
+//        String key = redisTemplate.opsForValue().get("key");
+//        System.out.println("value:" + key);
+//    }
 
 //    public RedisApplication(RedisTemplate<String, String> redisTemplate){
 //        redisTemplate.opsForValue().set("hello","world");

@@ -5,12 +5,14 @@ package com.gsy.redis.rest;
 
 import com.alibaba.fastjson.JSONObject;
 import com.gsy.redis.demo.KVBean;
+import com.gsy.redis.demo.ListBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -64,6 +66,47 @@ public class DemoRest {
         boolean bitRes = kvBean.getBit(bitMapKey, 100);
         boolean bitRes2 = kvBean.getBit(bitMapKey, 101);
         result.put("bitMap", bitRes + ">> true | " + bitRes2 + ">> false");
+        return JSONObject.toJSONString(result);
+    }
+
+    @Autowired
+    private ListBean listBean;
+
+    @GetMapping(path = "list")
+    public String showList() {
+        Map<String, String> result = new HashMap<>(16);
+        String key = "listKey";
+        // 删除之前的缓存，避免影响测试数据
+        listBean.delete(key);
+
+        // 新增一个数据
+        listBean.lpush(key, "hello");
+
+        // 获取列表中的所有值
+        List<String> redisVal = listBean.range(key, 0, -1);
+        result.put("list", redisVal.toString());
+
+
+        String indexVal = listBean.index(key, 0);
+        result.put("index", indexVal + " == hello");
+
+
+        listBean.lpush(key, "12");
+        listBean.lpush(key, "23");
+        listBean.lpush(key, "45");
+        listBean.lpush(key, "67");
+        listBean.trim(key, 0, 3);
+        redisVal = listBean.range(key, 0, -1);
+        result.put("trim", redisVal.toString());
+
+
+        String pop = listBean.lpop(key);
+        result.put("pop", pop + " == 67");
+        result.put("size", listBean.size(key) + "==3");
+
+
+        listBean.set(key, 0, "aaa");
+        result.put("afterSet", listBean.index(key, 0) + "==aaa");
         return JSONObject.toJSONString(result);
     }
 
