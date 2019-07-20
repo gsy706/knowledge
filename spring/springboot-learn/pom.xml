@@ -21,6 +21,7 @@
         <module>aop</module>
         <module>mysql</module>
         <module>redis</module>
+        <module>redis-ranklisk</module>
     </modules>
 
     <properties>
