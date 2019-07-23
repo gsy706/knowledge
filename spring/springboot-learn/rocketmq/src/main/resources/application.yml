@@ -24,3 +24,6 @@ rocketmq:
   enableHistoryConsumer: false
   #启动顺序消费
   enableOrderConsumer: false
+
+server:
+  port: 9534
