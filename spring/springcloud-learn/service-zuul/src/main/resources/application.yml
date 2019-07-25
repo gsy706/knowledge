@@ -1,0 +1,29 @@
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+
+server:
+  port: 8769
+
+spring:
+  application:
+    name: service-zuul
+
+zuul:
+  # 设置全局敏感头，如果为空，表示接收所有敏感头信息
+  sensitive-headers:
+  # 禁用路由，访问api-a下的服务直接返回404
+  ignored-patterns:
+    /api/api-a/**
+  # 路由加前缀
+  prefix: /api
+  routes:
+    api-a:
+      # 自定义，真正用到的请求地址
+      path: /api-a/**
+      # 路由到的目标服务名称
+      serviceId: service-ribbon
+    api-b:
+      path: /api-b/**
+      serviceId: service-feign

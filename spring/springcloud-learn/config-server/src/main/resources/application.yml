@@ -1,0 +1,23 @@
+spring:
+  application:
+    name: config-server
+
+  cloud:
+    config:
+      server:
+        git:
+          # 配置git仓库地址
+          uri: https://github.com/forezp/SpringcloudConfig/
+          # 配置仓库路径
+          search-paths: respo
+          username:
+          password:
+      # 配置仓库的分支
+      label: master
+server:
+  port: 8888
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8889/eureka/
