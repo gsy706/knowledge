@@ -5,6 +5,8 @@ eureka:
   instance:
     # eureka实例名称
     hostname: localhost
+    # 显示IP
+    prefer-ip-address: true
   client:
     # 不向注册中心注册自己
     register-with-eureka: false
@@ -17,4 +19,7 @@ eureka:
 spring:
   application:
     name: eureka-server
+  profiles:
+    active: peer2
+
 
