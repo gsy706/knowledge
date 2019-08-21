@@ -1,0 +1,90 @@
+server:
+  port: 9666
+spring:
+  profiles:
+    active: path_route
+
+---
+spring:
+  cloud:
+    gateway:
+      routes:
+        # 每个router都需要一个唯一的id
+        - id: after_route
+          # 网关路由到http://httpbin.org:80/get
+          uri: http://httpbin.org:80/get
+          predicates:
+            - After=2017-01-20T17:42:47.789-07:00[America/Denver]
+  profiles: after_route
+
+---
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: header_route
+          uri: http://httpbin.org:80/get
+          predicates:
+            # 指定头名为X-Request-Id，且值为数字才会转发
+            - Header=X-Request-Id, \d+
+  profiles: header_route
+
+---
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: cookie_route
+          uri: http://httpbin.org:80/get
+          predicates:
+            # 指定cookie名为name, cookie值为gsy才会转发
+            - Cookie=name, gsy
+  profiles: cookie_route
+
+---
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: host_route
+          uri: http://httpbin.org:80/get
+          predicates:
+            # 指定头名为Host
+            - Host=**.gsy.com
+  profiles: host_route
+
+---
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: method_route
+          uri: http://httpbin.org:80/get
+          predicates:
+            # GET类型的请求都转发到此路由
+            - Method=GET
+  profiles: method_route
+
+---
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: path_route
+          uri: http://httpbin.org:80/get
+          predicates:
+            # 指定请求路径
+            - Path=/foo/{segment}
+  profiles: path_route
+
+---
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: query_route
+          uri: http://httpbin.org:80/get
+          predicates:
+            # 指定请求中含有参数名为name，值的为gsy
+            - Query=name, gsy
+  profiles: query_route
